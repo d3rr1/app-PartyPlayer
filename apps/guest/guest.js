@@ -581,6 +581,7 @@ var currentCollection = {
 	    });
 	    
 	    if(count > 0){
+	        $('#popupAction').popup('close');
 	        partyplayer.minigame.getGameData();   
 	    } else {
 	        $('#popupAction').html(

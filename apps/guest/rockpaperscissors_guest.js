@@ -36,28 +36,47 @@ partyplayer.minigame.ondata = function(params){
     
     var gameData = params.data;
     buildGameDataList('self');
-    /*
+    
     function buildGameDataList(type){
-        $('ul#playlist li.playlist-item').remove();
+        $('ul#playlist li').remove();
         
         switch(type){
             case 'self':
                 $('ul#playlist').append(
                     '<li data-swatch="a" class="ui-li ui-li-divider ui-btn ui-bar-a ui-corner-top" data-role="list-divider">' +
-                    'Select self-uploaded song for battling!</li>'
+                    'Select self-uploaded song for the fight!</li>'
                 )
                 for(var i=0; i<gameData.length;i++){
                     if(userProfile.userID.localeCompare(gameData[i].user.userID) == 0){
-                        $('<li pos=' + (i+1) + ' uid=' + gameData[i].user.userID + ' fid=' + gameData[i].funnelID + '>Position: ' + (i+1) + ' / ' + 
-                        ' Added by: <img src=' + gameData[i].user.thumbnail + ' width="50" height-"50"/> ' + gameData[i].user.alias + ' / Name: ' 
+                    
+                        var trItem = '';
+                    	trItem += '<li class="playlist-item" fid="' + gameData[i].funnelID + '" uid="' + gameData[i].user.userID + '"><a href="#">';
+                        trItem += '<img src="'+ gameData[i].user.thumbnail +'"/>';
+                        trItem += '<p>Added by: ' + gameData[i].user.alias + '</p>';
+                        
+                        if (gameData[i].item.title) {
+	                        trItem += '<h3>'+gameData[i].item.title+'</h3>';
+	                    } else {
+	                        trItem += '<h3>'+gameData[i].item.name+'</h3>';
+	                    }
+
+                        trItem += '<p>' + gameData[i].item.artist + ' / ' + gameData[i].item.album + '</p>';
+                        trItem += '<span class="ui-li-count">Position: ' + (i+1) + '</span>'
+                    	trItem += '</a></li>';
+                    	
+                    	$('ul#playlist').append(trItem);
+            	    	try {
+                    	    $('ul#playlist').listview('refresh');
+                        } catch (err) {
+
+                        }
+                    	/*
+                        $('<li class="playlist-item" pos=' + (i+1) + ' uid=' + gameData[i].user.userID + ' fid=' + gameData[i].funnelID + '>Position: ' + 
+                        (i+1) + ' / Added by: <img src=' + gameData[i].user.thumbnail + ' width="20" height="20"/> ' + gameData[i].user.alias + ' / Name: ' 
                         + gameData[i].item.name + ' / Title: ' + gameData[i].item.title + ' / Artist: ' + gameData[i].item.artist + 
-                        ' / Album: ' + gameData[i].item.album + '</li>').appendTo('ul#gamedata');
+                        ' / Album: ' + gameData[i].item.album + '</li>').appendTo('ul#playlist'); */
                     } 
                 };
-                
-                if($('ul#gamedata').children().length <= 0){
-                    alert("You don't have any songs in the Playlist, please add songs first...");
-                }
                 
                 $('ul#gamedata li').bind('click', function(){
                     console.log($(this).attr('fid') + ' selected');
@@ -122,13 +141,8 @@ partyplayer.minigame.ondata = function(params){
                 partyplayer.sendMessageTo(partyplayer.getHost(), {ns:'minigame', cmd:'challenge', params:{data:selection}});
                 break; 
                 
-        }
-            $('#game').trigger('create');
-            $('#game').fadeIn(200);
-            
-        }); //end callback function fadeout
+        } //end switch
     }
-    */
 }
 
 partyplayer.minigame.onchallengeplayer = function(){
