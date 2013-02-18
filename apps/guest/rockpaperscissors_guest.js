@@ -17,7 +17,7 @@
  *
  * Authors: Daryll Rinzema
  */
- 
+
 var timerChallenger; //var timer for popup
 
 partyplayer.minigame.triggerChallenger = function(accept){
@@ -32,7 +32,6 @@ partyplayer.minigame.getGameData = function(){
 }
 
 partyplayer.minigame.ondata = function(params){
-    var selection = {};
     
     var gameData = params.data;
     buildGameDataList('self');
@@ -70,24 +69,17 @@ partyplayer.minigame.ondata = function(params){
                         } catch (err) {
 
                         }
-                    	/*
-                        $('<li class="playlist-item" pos=' + (i+1) + ' uid=' + gameData[i].user.userID + ' fid=' + gameData[i].funnelID + '>Position: ' + 
-                        (i+1) + ' / Added by: <img src=' + gameData[i].user.thumbnail + ' width="20" height="20"/> ' + gameData[i].user.alias + ' / Name: ' 
-                        + gameData[i].item.name + ' / Title: ' + gameData[i].item.title + ' / Artist: ' + gameData[i].item.artist + 
-                        ' / Album: ' + gameData[i].item.album + '</li>').appendTo('ul#playlist'); */
                     } 
                 };
                 
-                $('ul#gamedata li').bind('click', function(){
-                    console.log($(this).attr('fid') + ' selected');
-                    selection.pos = parseInt($(this).attr('pos'));
-                    selection.player1 = {
+                $('ul#playlist li').bind('click', function(){
+                    //console.log($(this).attr('fid') + ' selected');
+                    partyplayer.minigame.selection.player1 = {
                         userID:userProfile.userID,
                         funnelID:$(this).attr('fid')
                     }
-                    console.log(selection);
-                    $(this).css({'background-color':'orange'});
-                    buildGameDataList('other');
+                    console.log(partyplayer.minigame.selection);
+                    //buildGameDataList('opponent');
                 });
                 break;
              case 'other':

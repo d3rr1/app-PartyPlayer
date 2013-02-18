@@ -202,6 +202,7 @@ partyplayer.main = {};
 partyplayer.funnel = {};
 partyplayer.player = {};
 partyplayer.minigame = {}; //see rockpaperscissors_guest.js for functions
+partyplayer.minigame.selection = {};
 partyplayer.main.onwelcome = function(param, ref) {
     userProfile.userID = param.userID;
     log('onwelcome invoked! userID = '+ userProfile.userID); 
@@ -544,12 +545,16 @@ var currentCollection = {
 	    $( "#popupAction" ).append(
 	        '<h3>Choose your action...</h3>' +
 	        '<div id=' + id + ' class="vote" onclick="currentCollection.voteClick(this.id)" data-role="button">Vote</div>' +
-	        '<div id=' + id + ' class="challenge" onclick="currentCollection.challenge(this.id)" data-role="button">Challenge</div>'   
+	        '<div id=' + id + ' uid=' + uid + ' class="challenge" data-role="button">Challenge</div>'   
 	    ).trigger("create");
 	    
 	    //disable challenge button if I added the song to the Funnel
 	    if(userProfile.userID == uid){
 	        $('#' + id + '.challenge').remove();
+	    } else {
+	         $('#' + id + '.challenge').click(function(){
+	             currentCollection.challenge($(this).attr('id'), $(this).attr('uid'));
+	         });
 	    }
 	    
 	    //hack to disable exiting popup if clicked outside the popup window
@@ -570,8 +575,7 @@ var currentCollection = {
 	    
 	    partyplayer.voteFunnelItem(id);
 	},
-	challenge : function (id) {
-	    //$( '#popupAction' ).popup('close');
+	challenge : function (id, uid) {
 	    var count = 0;
 	    
 	    $('ul#playlist li.playlist-item').each(function(){
@@ -582,6 +586,10 @@ var currentCollection = {
 	    
 	    if(count > 0){
 	        $('#popupAction').popup('close');
+	        partyplayer.minigame.selection.player2 = {
+	            userID : uid,
+	            funnelID : id
+	        }
 	        partyplayer.minigame.getGameData();   
 	    } else {
 	        $('#popupAction').html(
