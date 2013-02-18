@@ -33,7 +33,7 @@ minigame.getGameData = function(){
 }
 
 partyplayer.minigame.ondata = function(params){
-    
+    /*
     var selection = {};
     
     var gameData = params.data;
@@ -130,6 +130,7 @@ partyplayer.minigame.ondata = function(params){
             
         }); //end callback function fadeout
     }
+    */
 }
 
 partyplayer.minigame.onchallengeplayer = function(){

@@ -86,6 +86,8 @@ function initProfile() {
                 $('#mail').val(localStorage.mailAddress);
             }
         });
+        
+        $( "#popupAction" ).popup( "close" );
 
         if (popupLoading) {
             $('#popupLoading').popup("close");
@@ -124,7 +126,7 @@ $('#home').live('pageinit', function(event) {
 
 $('#playlist').live('pageinit', function(event) {
     $('ul#playlist li.playlist-item').tsort('span:eq(0)', {order:'desc'});
-    $('ul#playlist li.playlist-item').unbind("click").bind("click", currentCollection.voteClick);
+    $('ul#playlist li.playlist-item').unbind("click").bind("click", function(){currentCollection.popupOpen($(this).attr('id'),$(this).attr('uid'));});
     $('ul#playlist').listview('refresh');
 });
 
@@ -349,8 +351,11 @@ partyplayer.funnel.onupdateFunnelItem = function (param, ref) {
 
     if (item) {
         var trItem = '';
-    	trItem += '<li class="playlist-item" id="' + param.funnelItemID + '"><a href="#">';
+    	trItem += '<li class="playlist-item" id="' + param.funnelItemID + '" uid="' + param.userID + '"><a href="#">';
         trItem += '<img src="'+item.cover+'"/>';
+        if(userProfile.userID == param.userID){
+            trItem += '<p>Added by myself!</p>';
+        }
         
         if (item.title) {
 		    trItem += '<h3>'+item.title+'</h3>';
@@ -363,6 +368,7 @@ partyplayer.funnel.onupdateFunnelItem = function (param, ref) {
     	trItem += '</a></li>';
 
         $('ul#playlist').append(trItem);
+        $('ul#playlist li.playlist-item').unbind("click").bind("click", function(){currentCollection.popupOpen($(this).attr('id'),$(this).attr('uid'));});
 
         if (param.userID != userProfile.userID) {
                 //         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -375,7 +381,7 @@ partyplayer.funnel.onupdateFunnelItem = function (param, ref) {
                 //     }
                 // });
                 //         } else {
-                $('#' + param.funnelItemID).unbind("click").bind("click", currentCollection.voteClick);
+                $('#' + param.funnelItemID).unbind("click").bind("click", function(){currentCollection.popupOpen($(this).attr('id'),$(this).attr('uid'));});
             // }
         }
 
@@ -406,7 +412,7 @@ partyplayer.funnel.onvotedFunnelItem = function(param, ref) {
     
     // sort
     $('ul#playlist li.playlist-item').tsort('span:eq(0)', {order:'desc'});
-    $('ul#playlist li.playlist-item').unbind("click").bind("click", currentCollection.voteClick);
+    $('ul#playlist li.playlist-item').unbind("click").bind("click", function(){currentCollection.popupOpen($(this).attr('id'), $(this).attr('uid'));});
 
 	try {
 	    $('ul#playlist').listview('refresh');
@@ -533,15 +539,41 @@ function enterTheParty(username, mailAddress) {
 
 var currentCollection = {
     collection: new Array(),
-	voteClick: function(event){
-	    var funnelItemID = $(this).attr('id');
-		console.log("funnel id = "+$(this).attr('id'));
-		console.log("vote+1");
-		partyplayer.voteFunnelItem(funnelItemID);
+	popupOpen: function(id, uid){
+	     $( '#popupAction' ).html('');
+	    $( "#popupAction" ).append(
+	        '<h3>Choose your action...</h3>' +
+	        '<div id=' + id + ' class="vote" onclick="currentCollection.voteClick(this.id)" data-role="button">Vote</div>' +
+	        '<div id=' + id + ' class="challenge" onclick="currentCollection.challenge(this.id)" data-role="button">Challenge</div>'   
+	    ).trigger("create");
+	    
+	    //disable challenge button if I added the song to the Funnel
+	    if(userProfile.userID == uid){
+	        $('#' + id + '.challenge').remove();
+	    }
+	    
+	    //hack to disable exiting popup if clicked outside the popup window
+        $("#popupAction").on({
+            popupbeforeposition: function () {
+                $('.ui-popup-screen').off();
+            }
+        });
+        
+		$( "#popupAction" ).popup( "open" );
 	},	
 	preferItemsClick: function(event){
 		var itemID = $(this).attr('id');
 		partyplayer.addFunnelItem(itemID);
+	},
+	voteClick : function (id) {
+	    $( '#popupAction' ).popup('close');
+	    
+	    partyplayer.voteFunnelItem(id);
+	},
+	challenge : function (id) {
+	    $( '#popupAction' ).popup('close');
+	    
+	    minigame.getGameData();
 	}
 };
 

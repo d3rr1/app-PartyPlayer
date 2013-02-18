@@ -159,7 +159,7 @@ partyplayer.funnel.onaddItem = function(params, ref, from) {
     
     if (bootstrapped) { // the party host must enable the party by visiting as guest on one of his devices
         funnelItemID = funnel.addItem(params.itemID, params.userID);
-        partyplayer.sendMessage({"ns":"funnel",cmd:"updateFunnelItem", params:{userID:uID,funnelItemID:funnelItemID,itemID:params.itemID,votes:1}});
+        partyplayer.sendMessage({"ns":"funnel",cmd:"updateFunnelItem", params:{userID:params.userID,funnelItemID:funnelItemID,itemID:params.itemID,votes:1}});
 
         var item = pc.getItem(params.itemID);
         var service = partyplayer.files.services[item.userID];
