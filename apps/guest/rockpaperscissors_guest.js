@@ -18,36 +18,34 @@
  * Authors: Daryll Rinzema
  */
  
-var minigame = {};
 var timerChallenger; //var timer for popup
 
-minigame.triggerChallenger = function(accept){
+partyplayer.minigame.triggerChallenger = function(accept){
     $('#popupChallenge').popup('close');
     $('#popupChallenge').remove();
     clearInterval(timerChallenger); 
     partyplayer.sendMessageTo(partyplayer.getHost(), {ns:'minigame',cmd:'game',params:accept});
 }
 
-minigame.getGameData = function(){
+partyplayer.minigame.getGameData = function(){
     partyplayer.sendMessageTo(partyplayer.getHost(), {ns:'minigame', cmd:'getGameData'});
 }
 
 partyplayer.minigame.ondata = function(params){
-    /*
     var selection = {};
     
     var gameData = params.data;
     buildGameDataList('self');
-    
+    /*
     function buildGameDataList(type){
-        $('#game').fadeOut(200, function(){
-            $(this).html('');
+        $('ul#playlist li.playlist-item').remove();
         
         switch(type){
             case 'self':
-                $('#game').append('<h3>Own Funnel Items</h3>' + 
-                '<h4>Select which song to battle FOR...</h4>' +
-                '<ul id="gamedata" data-role="listview" data-theme="a">'); 
+                $('ul#playlist').append(
+                    '<li data-swatch="a" class="ui-li ui-li-divider ui-btn ui-bar-a ui-corner-top" data-role="list-divider">' +
+                    'Select self-uploaded song for battling!</li>'
+                )
                 for(var i=0; i<gameData.length;i++){
                     if(userProfile.userID.localeCompare(gameData[i].user.userID) == 0){
                         $('<li pos=' + (i+1) + ' uid=' + gameData[i].user.userID + ' fid=' + gameData[i].funnelID + '>Position: ' + (i+1) + ' / ' + 

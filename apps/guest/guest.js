@@ -571,9 +571,25 @@ var currentCollection = {
 	    partyplayer.voteFunnelItem(id);
 	},
 	challenge : function (id) {
-	    $( '#popupAction' ).popup('close');
+	   //$( '#popupAction' ).popup('close');
 	    
-	    minigame.getGameData();
+	    $('ul#playlist li.playlist-item').each(function(index){
+	        if($(this).attr('uid').localeCompare(userProfile.userID) != 0){
+	            $('#popupAction').html(
+	                '<p>You have no added items, <br/>add a song first.</p>'
+	            );
+                
+                $('<div data-role="button" width="100px">OK</div>').appendTo('#popupAction').click(function(){
+                    $('#popupAction').popup('close');
+                });
+                
+                $('#popupAction').trigger('create');
+	            return;
+	        } else {
+	            partyplayer.minigame.getGameData();
+	            return;
+	        } 
+	    });
 	}
 };
 
