@@ -88,6 +88,7 @@ var funnel = (function () {
 		addItem : function (id, userID) {			
     	    var funnelItem = new partyplayer.FunnelItem(id, 1, userID); //1 = 1 vote
     	    var key = funnelList.addItem(funnelItem);
+    	    
     	    funnelItem.funnelItemID = key;
 	    
 
@@ -260,6 +261,30 @@ var funnel = (function () {
 		    if (!player.isPlaying()) {
                 player.start();
 		    }
+		},
+		
+		buildSortedCombi : function () {
+		    var fullList = [];
+		    for(var i = 0; i < sortedItems.length; i++){
+		        var key = sortedItems[i][0];
+		        var funnelItem = funnel.getFunnelListItem(key);
+		        var user = pc.getUser(funnelItem.userID);
+		        var item = pc.getItem(funnelItem.itemID);
+		        var details = {
+		            funnelID : key,
+		            item :  { artist : item.item.artist,
+		                      album : item.item.album,
+		                      title : item.item.title,
+		                      name : item.item.blob.name
+		                    },
+		            user :  { userID : funnelItem.userID,
+		                      alias : user.alias,
+		                      thumbnail : user.thumbnail
+		                    }
+		        }
+		        fullList[i] = details;
+		    }
+		    return fullList;
 		}
 	}	
 })();

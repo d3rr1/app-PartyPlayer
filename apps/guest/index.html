@@ -49,6 +49,7 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 			<script type="text/javascript" src="../lib/jquery.flexslider-min.js"></script>
       <script type="text/javascript" src="jquery.jplayer.min.js"></script>
       <script type="text/javascript" src="../lib/reflection.js"></script>
+      <script type="text/javascript" src="rockpaperscissors_guest.js"></script>
     </head>
     <body>
 		<div data-role="page" id="home">
@@ -147,6 +148,7 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 					<li><a href="#collection" id="home-collection" data-icon="custom">SONGS</a></li>
 					<li><a href="#guests" id="home-guests" data-icon="custom">CROWD</a></li>
 					<li><a href="#about" id="home-about" data-icon="custom">ABOUT</a></li>
+					<li><a href="#minigame1" id="home-minigame" data-icon="custom" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
 				</ul>
 				</div>
 			</div>
@@ -183,6 +185,7 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 					<li><a href="#collection" id="playlist-collection" data-icon="custom">SONGS</a></li>
 					<li><a href="#guests" id="playlist-guests" data-icon="custom">CROWD</a></li>
 					<li><a href="#about" id="playlist-about" data-icon="custom">ABOUT</a></li>
+					<li><a href="#minigame1" id="playlist-minigame" data-icon="custom" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
 				</ul>
 				</div>
 			</div>
@@ -232,11 +235,14 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 					<li><a href="#collection" id="collection-collection" data-icon="custom" class="ui-btn-active ui-state-persist">SONGS</a></li>
 					<li><a href="#guests" id="collection-guests" data-icon="custom">CROWD</a></li>
 					<li><a href="#about" id="collection-about" data-icon="custom">ABOUT</a></li>
+					<li><a href="#minigame1" id="collection-minigame" data-icon="custom" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
 				</ul>
 				</div>
 			</div>
 		</div>
 		
+		
+				
 		<!-------- GUESTS ------>
 
 		<div data-role="page" class="type-home" id="guests">
@@ -268,6 +274,7 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 					<li><a href="#collection" id="guests-collection" data-icon="custom">SONGS</a></li>
 					<li><a href="#guests" id="guests-guests" data-icon="custom" class="ui-btn-active ui-state-persist">CROWD</a></li>
 					<li><a href="#about" id="guests-about" data-icon="custom">ABOUT</a></li>
+					<li><a href="#minigame1" id="guests-minigame" data-icon="custom" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
 				</ul>
 				</div>
 			</div>
@@ -299,10 +306,46 @@ Authors Victor Klos, Arno Pont, Martin Prins, Eelco Cramer
 					<li><a href="#collection" id="about-collection" data-icon="custom">SONGS</a></li>
 					<li><a href="#guests" id="about-guests" data-icon="custom">CROWD</a></li>
 					<li><a href="#about" id="about-about" data-icon="custom" class="ui-btn-active ui-state-persist">ABOUT</a></li>
+					<li><a href="#minigame1" id="about-minigame" data-icon="custom" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
 				</ul>
 				</div>
 			</div>
 		</div>
+		
+		<!-------- Rock Paper Scissors ------>
+
+		<div data-role="page" class="type-home" id="minigame1">
+			<div data-role="header" data-position="fixed">
+				<h1>Party Player</h1>
+			</div>
+			
+			<div data-role="content" data-theme="a">
+			    <div id="game">
+			        
+			    </div>
+			</div>
+
+			<style>
+				#about-home .ui-icon { background:  url(icons/home.png) 50% 50% no-repeat; }
+				#about-playlist .ui-icon { background:  url(icons/playlist.png) 50% 50% no-repeat; }
+				#about-collection .ui-icon { background:  url(icons/collection.png) 50% 50% no-repeat; }
+				#about-guests .ui-icon { background:  url(icons/guests.png) 50% 50% no-repeat; }
+				#about-about .ui-icon { background:  url(icons/about.png) 50% 50% no-repeat; }
+			</style>
+
+			<div data-role="footer" class="party-nav" data-position="fixed" data-id="navigation">
+				<div data-role="navbar" class="party-nav" data-grid="d">
+				<ul>
+					<li><a href="#home" id="about-home" data-icon="custom">HOME</a></li>
+					<li><a href="#playlist" id="about-playlist" data-icon="custom">PLAYLIST</a></li>
+					<li><a href="#collection" id="about-collection" data-icon="custom">SONGS</a></li>
+					<li><a href="#guests" id="about-guests" data-icon="custom">CROWD</a></li>
+					<li><a href="#about" id="about-about" data-icon="custom">ABOUT</a></li>
+					<li><a href="#minigame1" id="about-minigame" data-icon="custom" class="ui-btn-active ui-state-persist" onclick="minigame.getGameData()">ROCK|PAPER|SCISSORS</a></li>
+				</ul>
+				</div>
+			</div>
+	    </div>
 	</body>
 	
 </html>

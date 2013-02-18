@@ -199,6 +199,7 @@ partyplayer.voteFunnelItem = function(funnelItemID){
 partyplayer.main = {};
 partyplayer.funnel = {};
 partyplayer.player = {};
+partyplayer.minigame = {}; //see rockpaperscissors_guest.js for functions
 partyplayer.main.onwelcome = function(param, ref) {
     userProfile.userID = param.userID;
     log('onwelcome invoked! userID = '+ userProfile.userID); 

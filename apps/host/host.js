@@ -28,12 +28,17 @@ partyplayer.funnel = {};
 partyplayer.files = { services: {}};
 partyplayer.player = {};
 partyplayer.player.streaming="False";
+partyplayer.minigame = {}; //see rockpaperscissors_host.js for functions
 
 var bootstrapped = false;
 
 partyplayer.main.onjoin = function(params, ref, from) {
     uID = pc.addUser(params); //registration on application level
-    users[from]=uID; //registration on connection level.
+    var user = {
+        userID : uID,
+        address : from
+    }
+    users[uID]=user //registration on connection level.
     partyplayer.sendMessageTo(from, {ns:"main", cmd:"welcome", params:{userID:uID}});
     pUsers = pc.getUsers();
     
@@ -251,6 +256,7 @@ function updateItems(){
     }
     console.log("COLLECTION="+str);
 }
+
 
 function addHostCollection(fileService, uID) {
     fileService.requestFileSystem(1, 1024, function (fileSystem) {
