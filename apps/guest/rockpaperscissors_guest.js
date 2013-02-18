@@ -18,7 +18,7 @@
  * Authors: Daryll Rinzema
  */
 
-var timerChallenger; //var timer for popup
+var timerChallenger; //timer for popup when challenged
 
 partyplayer.minigame.triggerChallenger = function(accept){
     $('#popupChallenge').popup('close');
@@ -79,58 +79,25 @@ partyplayer.minigame.ondata = function(params){
                         funnelID:$(this).attr('fid')
                     }
                     console.log(partyplayer.minigame.selection);
-                    //buildGameDataList('opponent');
-                });
-                break;
-             case 'other':
-                $('#game').append('<h3>Rest of Funnel Items</h3>' + 
-                '<h4>Select which song to battle AGAINST...</h4>' +
-                '<ul id="gamedata" data-role="listview">'); 
-                for(var i=0; i<selection.pos;i++){
-                     if(userProfile.userID.localeCompare(gameData[i].user.userID) != 0){
-                        $('<li uid=' + gameData[i].user.userID + ' fid=' + gameData[i].funnelID + '>Position: ' + (i+1) + ' / '+ 
-                        ' Added by: <img src=' + gameData[i].user.thumbnail + ' width="50" height-"50"/> ' + gameData[i].user.alias + ' / Name: ' 
-                        + gameData[i].item.name + ' / Title: ' + gameData[i].item.title + ' / Artist: ' + gameData[i].item.artist + 
-                        ' / Album: ' + gameData[i].item.album + '</li>').appendTo('ul#gamedata');
-                    }
-                }
-                
-                //if user cant select any items (because for example he selected the first song), go to previous screen
-                if($('ul#gamedata').children().length <= 0){
-                    buildGameDataList('self');
-                    alert("Sorry! You can't battle for this song at the moment.");
-                }
-                
-                $('ul#gamedata li').bind('click', function(){
-                    console.log($(this).attr('fid') + ' selected');
-                    selection.player2 = {
-                        userID:$(this).attr('uid'),
-                        funnelID:$(this).attr('fid')
-                    }
-                    delete selection.pos;
-                    $(this).css({'background-color':'orange'});
-                    console.log(selection);
                     buildGameDataList('opponent');
                 });
                 break;
              case 'opponent':
-                $('<div data-role="popup" data-overlay-theme="a" id="popupChallenge" class="ui-content">' +
-	            '<p>Challenging opponent!<p>' +
-                '</div>').appendTo('#game');
+                $('#popupAction').html('<h3>Challenging opponent...</h3>');
                 
-                $('#game').trigger('create');
+                $('#popupAction').trigger('create');
                 
-                $('#popupChallenge').popup('open');
+                $('#popupAction').popup('open');
                 
                 //hack to disable exiting popup if clicked outside the popup window
-                $("#popupChallenge").on({
+                $("#popupAction").on({
                     popupbeforeposition: function () {
                         $('.ui-popup-screen').off();
                     }
                 });
                 
                 //send selected data to host
-                partyplayer.sendMessageTo(partyplayer.getHost(), {ns:'minigame', cmd:'challenge', params:{data:selection}});
+                partyplayer.sendMessageTo(partyplayer.getHost(), {ns:'minigame', cmd:'challenge', params:{data:partyplayer.minigame.selection}});
                 break; 
                 
         } //end switch
@@ -138,20 +105,20 @@ partyplayer.minigame.ondata = function(params){
 }
 
 partyplayer.minigame.onchallengeplayer = function(){
-       
-    var id = location.hash;
+    
+    id = location.hash;
     
     //build popup
-    $('<div data-role="popup" data-overlay-theme="a" id="popupChallenge" class="ui-content">' +
-	    '<p>Someone wants to challenge you!<p>' +
-	    '<button onclick="minigame.triggerChallenger(true)">Accept</button>' +
-	    '<button onclick="minigame.triggerChallenger(false)">Decline</button>' +
-    '</div>').appendTo(id);
-    
+    $('<div data-role="popup" id="popupChallenge" data-theme="a" data-overlay-theme="a" class="ui-content">' +
+      '<p>Someone wants to challenge you!<p>' +
+      '<div data-theme="a" data-role="button" onclick="partyplayer.minigame.triggerChallenger(true)">Accept</div>' +
+      '<div data-theme="a" data-role="button" onclick="partyplayer.minigame.triggerChallenger(false)">Decline</div>' +
+      '</div>').appendTo(id);
+      
     $(id).trigger('create');
     
     //hack to disable exiting popup if clicked outside the popup window
-    $("#popupChallenge").on({
+    $('#popupChallenge').on({
         popupbeforeposition: function () {
             $('.ui-popup-screen').off();
         }
@@ -168,14 +135,14 @@ partyplayer.minigame.ongame = function(){
     var selection = {};
     selection.userID = userProfile.userID;
     
-    if(location.ash != 'minigame1'){
-        location.hash = 'minigame1';
+    if(location.hash != 'playlist'){
+        location.hash = 'playlist';
     }
-    
-    $('#popupChallenge').popup('close');
-    $('#popupChallenge').remove();
-    
+    $('#popupAction').popup('close');
+   
     //build the Rock-Paper-Scissors screen  
+    //make using popupAction
+    /*
      $('#game').fadeOut(200, function(){
         $(this).html('');
         $('<h3>Select your weapon!</h3>').appendTo('#game');
@@ -205,6 +172,7 @@ partyplayer.minigame.ongame = function(){
             $(this).fadeIn(200);
         });
      }
+     */
 }
 
 partyplayer.minigame.onresult = function(params){    
