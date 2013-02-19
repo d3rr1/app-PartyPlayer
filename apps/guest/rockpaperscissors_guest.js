@@ -217,7 +217,7 @@ partyplayer.minigame.onresult = function(params){
         $(popupID).html('<h3>You win!</h3>');
         break;
     case 2:
-        $(popupID).html('<h3>You loose!</h3>');
+        $(popupID).html('<h3>You lose!</h3>');
         break;
     }
     $('<div data-theme="a" data-role="button">OK</div>').appendTo(popupID).click(function(){
