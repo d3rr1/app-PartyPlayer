@@ -179,16 +179,14 @@ partyplayer.minigame.switchItem = function(){
             items.votes2 = currentList[i][1];
         }
     }
+    //switch votes
+    currentList[items.index1][1] = items.votes2;
+    currentList[items.index2][1] = items.votes1;
     
-    if(items.votes1 == items.votes2){   
-        //if votes are the same, switch position
-        var old = currentList[items.index2];
-        currentList[items.index2] = currentList[items.index1];
-        currentList[items.index1] = old; 
-    } else {
-        currentList[items.index1][1] = items.votes2;
-        currentList[items.index2][1] = items.votes1;
-    }
+    //switch position
+    var old = currentList[items.index2];
+    currentList[items.index2] = currentList[items.index1];
+    currentList[items.index1] = old; 
     
     funnel.setFunnel(currentList);
 
