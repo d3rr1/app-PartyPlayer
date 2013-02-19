@@ -48,7 +48,8 @@ partyplayer.minigame.ongame = function(params){
     switch(params){
         case true:
             console.log('player2 accepted the challenge');
-            partyplayer.sendMessage({ns:'minigame', cmd:'game'}); //start the game on both sides
+            partyplayer.sendMessageTo(selectedData.player1.address, {ns:'minigame', cmd:'game'}); //start the game on both sides
+            partyplayer.sendMessageTo(selectedData.player2.address, {ns:'minigame', cmd:'game'}); 
             break;
         case false:
             console.log('player2 declined the challenge');
@@ -165,24 +166,30 @@ partyplayer.minigame.calcWinner = function(){
 }
 
 partyplayer.minigame.switchItem = function(){
-    console.log('do something with items here... votes?');
+    var currentList = funnel.getFunnel();
+    var items = {};
     
-    /*
-    var index1, index2, item1, item2;
-    for(var i = 0; i<gameData.length;i++){
-        if(gameData[i].funnelID == selectedData.player1.funnelID){
-            index1 = i;
-            item1 = gameData[i];
+    for(var i=0;i<currentList.length;i++){
+        if(currentList[i][0] == selectedData.player1.funnelID){
+            items.index1 = i;
+            items.votes1 = currentList[i][1];
         }
-        if(gameData[i].funnelID == selectedData.player2.funnelID){
-            index2 = i;
-            item2 = gameData[i];
+        if(currentList[i][0] == selectedData.player2.funnelID){
+            items.index2 = i;
+            items.votes2 = currentList[i][1];
         }
     }
-    gameData[index2] = item1;
-    gameData[index1] = item2;
     
-    console.log('switching: ' + index1 + ' with ' + index2);
-    console.log(gameData);      
-    */  
+    if(items.votes1 == items.votes2){   
+        //if votes are the same, switch position
+        var old = currentList[items.index2];
+        currentList[items.index2] = currentList[items.index1];
+        currentList[items.index1] = old; 
+    } else {
+        currentList[items.index1][1] = items.votes2;
+        currentList[items.index2][1] = items.votes1;
+    }
+    
+    funnel.setFunnel(currentList);
+
 }

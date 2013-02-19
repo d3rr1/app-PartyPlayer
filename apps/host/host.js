@@ -76,6 +76,7 @@ partyplayer.main.onjoin = function(params, ref, from) {
          * @private
          */
         onFound: function (service) {
+            console.log(service.serviceAddress);
             if (params.serviceAddress === service.serviceAddress) {
                 service.bindService({
                     onBind: function () {

@@ -243,6 +243,11 @@ var funnel = (function () {
 		getFunnel : function () {
 		    return sortedItems;
 		},
+		
+		setFunnel : function (list) {
+		    sortedItems = list;
+		    console.log(sortedItems);
+		},
 		/**
 		 *  int Returns The amount of circles the funnel consists of
 		 *
