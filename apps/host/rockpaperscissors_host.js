@@ -183,10 +183,16 @@ partyplayer.minigame.switchItem = function(){
     currentList[items.index1][1] = items.votes2;
     currentList[items.index2][1] = items.votes1;
     
+    //also make votes the same in the FunnelList
+    funnel.getFunnelListItem(currentList[items.index1][0]).votes = items.votes2;
+    funnel.getFunnelListItem(currentList[items.index2][0]).votes = items.votes1;
+    
     //switch position
     var old = currentList[items.index2];
     currentList[items.index2] = currentList[items.index1];
     currentList[items.index1] = old; 
+    
+    
     
     funnel.setFunnel(currentList);
 

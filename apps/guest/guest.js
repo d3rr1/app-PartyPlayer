@@ -438,6 +438,15 @@ partyplayer.funnel.onremoveFunnelItem = function (param, ref) {
     $('.funnel[funnelItemID=' +param.funnelItemID+']').remove();
 }
 
+partyplayer.funnel.onrefreshPlaylist = function(param, ref){
+    $('ul#playlist').html('<li data-swatch="a" class="ui-li ui-li-divider ui-btn ui-bar-a ui-corner-top" data-role="list-divider">Playlist</li>');
+    
+    for(funnelItem in param){
+        console.log(param[funnelItem]);
+        partyplayer.funnel.onupdateFunnelItem(param[funnelItem], '');
+    }    
+}
+
 partyplayer.player.onstreamUpdate = function (param, ref) {
     log ('onstreamUpdate Invoked on player')
     if (param.enabled == "True"){

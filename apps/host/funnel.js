@@ -246,7 +246,19 @@ var funnel = (function () {
 		
 		setFunnel : function (list) {
 		    sortedItems = list;
-		    console.log(sortedItems);
+		    var funnelItems = {};
+		    for(var i=0; i<sortedItems.length;i++){
+		        var funnelItem = funnel.getFunnelListItem(sortedItems[i][0]);
+		        var item = pc.getItem(funnelItem.itemID);
+		        var user = pc.getUser(funnelItem.userID);
+		        funnelItems[sortedItems[i][0]] = {
+		            userID : funnelItem.userID,
+		            itemID : funnelItem.itemID,
+		            funnelItemID : sortedItems[i][0],
+		            votes : sortedItems[i][1]
+		        }
+		    }
+		    partyplayer.sendMessage({ns:'funnel', cmd:'refreshPlaylist', params:funnelItems});
 		},
 		/**
 		 *  int Returns The amount of circles the funnel consists of
