@@ -595,7 +595,7 @@ var currentCollection = {
 	    
 	    if(count > 0){
 	        $('#popupAction').popup('close');
-	        partyplayer.minigame.selection.player2 = {
+	        partyplayer.minigame.selection.p2 = {
 	            userID : uid,
 	            funnelID : id
 	        }

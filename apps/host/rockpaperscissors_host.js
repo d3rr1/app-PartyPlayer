@@ -32,29 +32,30 @@ partyplayer.minigame.onchallenge = function(params, ref, from){
     selectedData = params.data;
     
     for(user in users){
-        if(users[user].userID == selectedData.player1.userID){
-            selectedData.player1.address = users[user].address;
+        if(users[user].userID == selectedData.p1.userID){
+            selectedData.p1.address = users[user].address;
         }
-        if(users[user].userID == selectedData.player2.userID){
-            selectedData.player2.address = users[user].address;
+        if(users[user].userID == selectedData.p2.userID){
+            selectedData.p2.address = users[user].address;
         }
     }    
-    partyplayer.sendMessageTo(selectedData.player2.address, {ns:'minigame', cmd:'challengeplayer'});
+    partyplayer.sendMessageTo(selectedData.p2.address, {ns:'minigame', cmd:'challengeplayer'});
 }
 
 partyplayer.minigame.ongame = function(params){
-    //params = accepted: true/false by player2
+    //params = accepted: true/false by p2
     console.log(params);
     switch(params){
         case true:
-            console.log('player2 accepted the challenge');
-            partyplayer.sendMessageTo(selectedData.player1.address, {ns:'minigame', cmd:'game'}); //start the game on both sides
-            partyplayer.sendMessageTo(selectedData.player2.address, {ns:'minigame', cmd:'game'}); 
+            console.log('p2 accepted the challenge');
+            partyplayer.sendMessageTo(selectedData.p1.address, {ns:'minigame', cmd:'game'}); //start the game on both sides
+            partyplayer.sendMessageTo(selectedData.p2.address, {ns:'minigame', cmd:'game'}); 
             break;
         case false:
-            console.log('player2 declined the challenge');
+            console.log('p2 declined the challenge');
             //winstate, 0=draw, 1=win, 2=lost
-            partyplayer.sendMessageTo(selectedData.player1.address, {ns:'minigame', cmd:'result', params:{win:1}});
+            partyplayer.sendMessageTo(selectedData.p1.address, {ns:'minigame', cmd:'result', params:{win:1}});
+            partyplayer.sendMessageTo(selectedData.p2.address, {ns:'minigame', cmd:'result', params:{win:2}});
             //minigame.switchItem();
             break;
     }
@@ -64,29 +65,29 @@ partyplayer.minigame.ongame = function(params){
 partyplayer.minigame.onchoice = function(params){
     
     //set choice for correct player
-    for(player in selectedData){
-        if((selectedData[player].userID).localeCompare(params.userID) == 0){
+    for(p in selectedData){
+        if((selectedData[p].userID).localeCompare(params.userID) == 0){
             //already convert the choice strings to number for easier comparison
             //rock=1, paper=2, scissors=3
             switch(params.choice){
                 case 'rock':
-                    selectedData[player].choice = 1;
+                    selectedData[p].choice = 1;
                     break;
                 case 'paper':
-                    selectedData[player].choice = 2;
+                    selectedData[p].choice = 2;
                     break;
                 case 'scissors':
-                    selectedData[player].choice = 3;
+                    selectedData[p].choice = 3;
                     break;
             }
         }
     }
     
-    for(player in selectedData){
-        if(selectedData[player].hasOwnProperty('choice')){
-            console.log(selectedData[player].userID + ' has made a choice: ' + selectedData[player].choice);
+    for(p in selectedData){
+        if(selectedData[p].hasOwnProperty('choice')){
+            //console.log(selectedData[player].userID + ' has made a choice: ' + selectedData[player].choice);
         } else {
-            console.log(selectedData[player].userID + ' has NOT made a choice, exiting...');
+            //console.log(selectedData[player].userID + ' has NOT made a choice, exiting...');
             return;
         }
     }
@@ -98,15 +99,15 @@ partyplayer.minigame.calcWinner = function(){
     //console.log('calculating winner with...');
     //console.log(selectedData);
     
-    var p1choice = selectedData.player1.choice;
-    var p2choice = selectedData.player2.choice;
+    var p1choice = selectedData.p1.choice;
+    var p2choice = selectedData.p2.choice;
     
     //win true/false, will be set in the switch/case
     var endResult = {
-        player1 : {
+        p1 : {
             win : ''
         },
-        player2 : {  
+        p2 : {  
             win : ''
         }
     };
@@ -116,53 +117,53 @@ partyplayer.minigame.calcWinner = function(){
     switch(p1choice){
         case 1:
             if(p1choice == p2choice){
-                endResult.player1.win=0;
-                endResult.player2.win=0;
+                endResult.p1.win=0;
+                endResult.p2.win=0;
             } else if(p1choice < p2choice){
                 if(p2choice == 2){
-                    endResult.player1.win=2;
-                    endResult.player2.win=1;
+                    endResult.p1.win=2;
+                    endResult.p2.win=1;
                 } else if(p2choice==3){
-                    endResult.player1.win=1;
-                    endResult.player2.win=2;
+                    endResult.p1.win=1;
+                    endResult.p2.win=2;
                 }   
             }
             break;
         case 2:
             if(p1choice == p2choice){
-                endResult.player1.win=0;
-                endResult.player2.win=0;
+                endResult.p1.win=0;
+                endResult.p2.win=0;
             } else if(p1choice < p2choice){
-                endResult.player1.win=2;
-                endResult.player2.win=1;
+                endResult.p1.win=2;
+                endResult.p2.win=1;
             } else if(p1choice > p2choice){
-                endResult.player1.win=1;
-                endResult.player2.win=2;
+                endResult.p1.win=1;
+                endResult.p2.win=2;
             }
             break;
         case 3:
             if(p1choice == p2choice){
-                endResult.player1.win=0;
-                endResult.player2.win=0;
+                endResult.p1.win=0;
+                endResult.p2.win=0;
             } else if(p1choice > p2choice){
                 if(p2choice == 2){
-                    endResult.player1.win=1;
-                    endResult.player2.win=2;
+                    endResult.p1.win=1;
+                    endResult.p2.win=2;
                 } else if(p2choice==1){
-                    endResult.player1.win=2;
-                    endResult.player2.win=1;
+                    endResult.p1.win=2;
+                    endResult.p2.win=1;
                 }   
             }
             break;
     }
     
-    //if player1 won switch funnelItems
-    if(endResult.player1.win == 1){
+    //if p1 won switch funnelItems
+    if(endResult.p1.win == 1){
         partyplayer.minigame.switchItem();
     }
     //console.log(endResult);
-    partyplayer.sendMessageTo(selectedData.player1.address, {ns:'minigame', cmd:'result', params:endResult.player1});
-    partyplayer.sendMessageTo(selectedData.player2.address, {ns:'minigame', cmd:'result', params:endResult.player2});
+    partyplayer.sendMessageTo(selectedData.p1.address, {ns:'minigame', cmd:'result', params:endResult.p1});
+    partyplayer.sendMessageTo(selectedData.p2.address, {ns:'minigame', cmd:'result', params:endResult.p2});
 }
 
 partyplayer.minigame.switchItem = function(){
@@ -170,11 +171,11 @@ partyplayer.minigame.switchItem = function(){
     var items = {};
     
     for(var i=0;i<currentList.length;i++){
-        if(currentList[i][0] == selectedData.player1.funnelID){
+        if(currentList[i][0] == selectedData.p1.funnelID){
             items.index1 = i;
             items.votes1 = currentList[i][1];
         }
-        if(currentList[i][0] == selectedData.player2.funnelID){
+        if(currentList[i][0] == selectedData.p2.funnelID){
             items.index2 = i;
             items.votes2 = currentList[i][1];
         }
@@ -190,10 +191,11 @@ partyplayer.minigame.switchItem = function(){
     //switch position
     var old = currentList[items.index2];
     currentList[items.index2] = currentList[items.index1];
-    currentList[items.index1] = old; 
-    
-    
+    currentList[items.index1] = old;
     
     funnel.setFunnel(currentList);
-
+    
+    if(funnel2Automotive){
+        funnel2Automotive.refreshFunnel();
+    }
 }

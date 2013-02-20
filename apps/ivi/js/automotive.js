@@ -52,6 +52,7 @@ var funnel2Automotive = (function(){
   var updateFunnelView = function(){
     sortedList = funnel.getFunnel();
   
+    console.log(sortedList);
 
 
 
@@ -70,7 +71,7 @@ var funnel2Automotive = (function(){
         //DISPLAY NEXT SONG;
         
         $('#cNext').css("background-image", "url("+ item.item.cover+")");
-
+        
         $('#cNextInner > .vtitle').html(item.item.title);
         $('#cNextInner > .vartist').html(item.item.artist);
 
@@ -157,6 +158,9 @@ var funnel2Automotive = (function(){
 
 
     },
+    refreshFunnel : function(){
+        updateFunnelView();
+    }
 
 
   }

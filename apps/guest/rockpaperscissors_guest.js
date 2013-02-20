@@ -81,7 +81,7 @@ partyplayer.minigame.ondata = function(params){
                 
                 $('ul#selection li.playlist-item').bind('click', function(){
                     //console.log($(this).attr('fid') + ' selected');
-                    partyplayer.minigame.selection.player1 = {
+                    partyplayer.minigame.selection.p1 = {
                         userID:userProfile.userID,
                         funnelID:$(this).attr('fid')
                     }
