@@ -87,7 +87,8 @@ function initProfile() {
             }
         });
         
-        $( "#popupAction" ).popup( "close" );
+        
+        //$( "#popupAction" ).popup( "close" );
 
         if (popupLoading) {
             $('#popupLoading').popup("close");

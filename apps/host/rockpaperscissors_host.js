@@ -195,7 +195,7 @@ partyplayer.minigame.switchItem = function(){
     
     funnel.setFunnel(currentList);
     
-    if(funnel2Automotive){
-        funnel2Automotive.refreshFunnel();
-    }
+    //if(funnel2Automotive){
+        //funnel2Automotive.refreshFunnel();
+    //}
 }

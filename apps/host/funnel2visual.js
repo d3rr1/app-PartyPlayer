@@ -55,18 +55,20 @@ var funnel2visual = (function(){
   });
 
   funnel.onVoteItem(function(funnelItem, key){
+        var oldSorted = funnel.oldSorted();
+        var next = funnel.nextItem();
         var circles = funnel.getCircles();
           //make the visual part update Item to next circle
         if(funnelItem.votes < circles){
             allItems['key_' + key].setCircle(circles + 1 - funnelItem.votes);
             funnelViz.updateCircle(allItems['key_' + key].getSelector(), allItems['key_' + key].getCircle());
-        } else if (!funnel.nextItem && funnelItem.votes >= circles) {
+        } else if (!next && funnelItem.votes >= circles) {
             allItems['key_' + key].setCircle(circles + 1 - funnelItem.votes);
             funnelViz.setCenter(allItems['key_' + key].getSelector());
-            funnel.nextItem = true;
+            funnel.nextItem(true);
         }
         
-        if(funnel.nextItem && funnelItem.votes >= circles){
+        if(next && funnelItem.votes >= circles){
             if(funnelItem.votes >= oldSorted[0][1]){
                 var oldItem = allItems['key_' + oldSorted[0][0]];
                 oldItem.setCircle(2);
@@ -75,12 +77,12 @@ var funnel2visual = (function(){
                 funnelViz.setCenter(allItems['key_' + key].getSelector());
             }
         }
+
   });
 
   funnel.onAnimate(function(key){
     clearInterval(allItems['key_' + key].getInterval());
     funnelViz.animateToPlayer(allItems['key_' + key].getSelector());
-    
   });
 
 })();

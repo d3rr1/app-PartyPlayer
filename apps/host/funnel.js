@@ -53,6 +53,7 @@ var funnel = (function () {
 	var funnelList = new Collection("Funnel");
 	//var allItems = {}; //object to push all funnelVars
 	var sortedItems = []; //array for sorting
+	var oldSorted;
 	var circles = 6;
 	var nextItem = false; //true if center circle is taken
 	
@@ -154,9 +155,9 @@ var funnel = (function () {
 	        console.log(funnelItem.votes);
 	        
 	        //sort sortedItems object according to votes
-	        var oldSorted = sortedItems.slice();
+	        oldSorted = sortedItems.slice();
 	        if(funnelItem.votes >= oldSorted[0][1]){
-	            for( var x = 0; x < sortedItems.length; x++){
+	            for(var x = 0; x < sortedItems.length; x++){
 	                if(oldSorted[x][0] == key){
 	                    var newItem = [key, funnelItem.votes]
 	                    sortedItems.splice(x, 1);
@@ -164,17 +165,16 @@ var funnel = (function () {
 	                }
 	            }
 	        } else {
-	        
-	          sortedItems = [];
-			    	for(var oldKey in allItems){
-			        newKey = oldKey.replace("key_", "");
-				    	sortedItems.push([newKey, funnelList.getItem(newKey).votes]);
-			    	}
-			    sortedItems.sort(function(a,b){return b[1]-a[1]});
-					
-				}
-			
+	            sortedItems = [];
+			    for(var y = 0; y<oldSorted.length; y++){
+			        var oldKey = oldSorted[y][0];
+			        var newKey = oldKey.replace("key_", "");
+				    sortedItems.push([newKey, funnelList.getItem(newKey).votes]);
+			    }
+			    sortedItems.sort(function(a,b){return b[1]-a[1]});		
+		    }
 			//check if items moved a position
+			/*
 			var oldPos, newPos;
 			for(var i = 0; i < sortedItems.length; i++){
 			    if(oldSorted[i][0]!= sortedItems[i][0]){
@@ -188,7 +188,7 @@ var funnel = (function () {
 			        }
 			    }
 			}
-			
+			*/
 			onVoteItemCallback(funnelItem, key);
 
 			console.log(oldSorted);
@@ -271,8 +271,16 @@ var funnel = (function () {
 		 *  boolean Returns If the next Item is already chosen
 		 *
 		**/
-		nextItem : function () {
-			return nextItem;
+		nextItem : function (bool) {
+		    if(bool){
+		        nextItem = bool;
+		    } else {
+			    return nextItem;
+			}
+		},
+		oldSorted : function (){
+		    oldSorted = sortedItems.slice();
+		    return oldSorted;
 		},
 		bump: function () {
 		    if (!player.isPlaying()) {
