@@ -191,8 +191,8 @@ var funnel = (function () {
 			*/
 			onVoteItemCallback(funnelItem, key);
 
-			console.log(oldSorted);
-			console.log(sortedItems);
+			//console.log(oldSorted);
+			//console.log(sortedItems);
 			
 			return funnelItem.votes;
 		},

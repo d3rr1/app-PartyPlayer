@@ -35,8 +35,8 @@ var funnel2visual = (function(){
     fnO.setKey(key);
     fnO.init();
 
-    console.log('ALL ITEMS:');
-    console.log(allItems);
+    //console.log('ALL ITEMS:');
+    //console.log(allItems);
 
   });
 
@@ -62,22 +62,24 @@ var funnel2visual = (function(){
         if(funnelItem.votes < circles){
             allItems['key_' + key].setCircle(circles + 1 - funnelItem.votes);
             funnelViz.updateCircle(allItems['key_' + key].getSelector(), allItems['key_' + key].getCircle());
-        } else if (!next && funnelItem.votes >= circles) {
+        }
+        if (!next && funnelItem.votes >= circles) {
             allItems['key_' + key].setCircle(circles + 1 - funnelItem.votes);
             funnelViz.setCenter(allItems['key_' + key].getSelector());
             funnel.nextItem(true);
         }
         
         if(next && funnelItem.votes >= circles){
-            if(funnelItem.votes >= oldSorted[0][1]){
-                var oldItem = allItems['key_' + oldSorted[0][0]];
+             if(funnelItem.votes > oldSorted[1][1]){
+                console.log("SWITCH!");
+                
+                var oldItem = allItems['key_' + oldSorted[1][0]];
                 oldItem.setCircle(2);
                 funnelViz.updateCircle(oldItem.getSelector(), oldItem.getCircle());
                 allItems['key_' + key].setCircle(1);
                 funnelViz.setCenter(allItems['key_' + key].getSelector());
             }
         }
-
   });
 
   funnel.onAnimate(function(key){
