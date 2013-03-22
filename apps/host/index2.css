@@ -20,13 +20,17 @@
 
 #tv-api-table{
     display: none;
+}
+
+body{
+    background-image:url('pw_maze_black.png');
 } 
 
 #funnel{
 	position: relative;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 100px;
+	margin-top: 50px;
 }
 #funnel .funnelCircle{
 	position: absolute;
@@ -35,9 +39,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    border: 2px solid black;
     border-radius: 100%;
-    background-color: white;
 }
 #funnel .funnelCircle .info{
     position: absolute;
@@ -68,3 +70,9 @@
         float: left;
         margin: 0;
     }
+    
+#player_wrap{
+    position: absolute;
+    margin-top: 150px;
+    top: 0;
+}

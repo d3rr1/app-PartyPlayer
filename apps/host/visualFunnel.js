@@ -167,19 +167,27 @@ var visualFunnel = function(name, selector){
 			width: funnelSize,
 			height: funnelSize
 		});
+		$('div#funnel img').css({
+			width: funnelSize,
+			height: funnelSize
+		});
+		
 		for(var i = 0; i < allCircles; i++){
+			
 			$('<div class="funnelCircle" circle=' + (i+1) + '>' +
 			'<div class="info">' + (allCircles - i) + '</div>' +
 		    '</div>').appendTo('div#funnel').css({
 				width: ((i+1) * step),
 				height: ((i+1) * step),
-				'z-index' : i-(i+i),
+				'z-index' : 999-(i+i),
 			});
+			/*
 			if(i%2==0){
 			    $('.funnelCircle[circle=' + (i+1 + ']')).css({
 			        'background-color': '#BBFFFF'
 			    });
 			};
+			*/
 	        $('.funnelCircle .info').css({
 	            'bottom' : inDist/2,
 	            'width' : inDist/3,
