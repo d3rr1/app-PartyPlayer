@@ -36,9 +36,8 @@ var visualFunnel = function(name, selector){
 	var funnelSize, step, allCircles, inDist;
 	var that = Visual(name, selector);
 	
-
 	var funnelWidth = 500;
-
+	var $funnelinfo = $('#funnelinfo');
 
 	/**
 	 *	Builds the path the DOM funnel element moves along
@@ -87,32 +86,6 @@ var visualFunnel = function(name, selector){
 		        newState = 2;
 		        break;
 		    case 2:
-		        var trackInfo = '<p class=title>' + itemInfo.title +'</p><p class=artist>' + itemInfo.artist +'</p><p class=album>' + itemInfo.album +'</p>';
-		        $(selector).html(trackInfo);
-		        $(selector + ' p').css({
-		            'font-size' : inDist/6,
-		            'font-weight' : 'bold',
-		            'margin-left' : inDist * 0.1,
-		            'margin-top' : inDist * 0.1,
-		            'width' : inDist * 0.8
-		        });
-                $(selector + ' .title').css({
-                    'padding-bottom' : inDist * 0.05,
-                    'border-bottom' : '1px solid #777777'
-                });
-                $(selector + ' .artist').css({
-                    'margin-top' : inDist * 0.05,
-                    'padding-bottom' : inDist * 0.05,
-                    'border-bottom' : '1px solid #777777'
-                });
-
-                $(selector + ' .album').css({
-                    'margin-top' : inDist * 0.05,
-                    'padding-bottom' : inDist * 0.05,
-                });
-                newState = 3;
-                break;
-		    case 3:
 		        var userCover = '<p class=usertxt>Added by: </p><img src='+ itemInfo.thumbnail +' class=thumbnail>';
 		        $(selector).html(userCover);
 		        $(selector + ' p').css({
