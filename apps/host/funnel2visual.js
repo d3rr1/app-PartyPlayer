@@ -44,7 +44,7 @@ var funnel2visual = (function(){
     var fnO = allItems['key_' + key];
     var sortedItems = funnel.getFunnel();
 
-    funnelViz.destroySingle(allItems['key_' + key].getSelector());
+    funnelViz.destroySingle(allItems['key_' + key].getSelector(), key);
     delete allItems['key_' + key];
     if(sortedItems[0]){
       if(sortedItems[0][1] >= funnel.getCircles()){
@@ -86,5 +86,9 @@ var funnel2visual = (function(){
     clearInterval(allItems['key_' + key].getInterval());
     funnelViz.animateToPlayer(allItems['key_' + key].getSelector());
   });
+  
+  getItems = function () {
+  	return allItems;
+  }
 
 })();

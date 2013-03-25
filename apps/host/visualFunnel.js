@@ -37,7 +37,11 @@ var visualFunnel = function(name, selector){
 	var that = Visual(name, selector);
 	
 	var funnelWidth = 500;
-	var $funnelinfo = $('#funnelinfo');
+	var funnelInfo = {
+		selector : '#funnelinfo',
+		interval : '',
+		items : []
+	}
 
 	/**
 	 *	Builds the path the DOM funnel element moves along
@@ -63,6 +67,36 @@ var visualFunnel = function(name, selector){
 			startArc(selector, circle);
 		});	
 	};
+	var buildInfoSwitcher = function (itemInfo) {
+		clearInterval(funnelInfo.interval);
+		funnelInfo.items.push(itemInfo);
+		changeInfoSwitcher(itemInfo);
+		
+	};
+	var changeInfoSwitcher = function (itemInfo) {
+		if(itemInfo){
+			$(funnelInfo.selector).html(
+				'<img src=' + itemInfo.cover + ' class=cover />' +
+				'<p>Title: ' + itemInfo.title + '</p>' +
+				'<p>Artist: ' + itemInfo.artist + '</p>' +
+				'<p>Album: ' + itemInfo.album + '</p>'			
+			).css('background-color', itemInfo.color);
+		} else {
+			var r = Math.floor((Math.random()*(funnelInfo.items.length)));
+			var itemInfo = funnelInfo.items[r];
+			if(itemInfo && itemInfo.color){
+				$(funnelInfo.selector).html(
+					'<img src=' + itemInfo.cover + ' class=cover />' +
+					'<p>Title: ' + itemInfo.title + '</p>' +
+					'<p>Artist: ' + itemInfo.artist + '</p>' +
+					'<p>Album: ' + itemInfo.album + '</p>'
+				).css('background-color', itemInfo.color);
+			} else {
+				$(funnelInfo.selector).html('Funnel is empty').css('background-color', 'white');
+			}
+		}
+		funnelInfo.interval = setTimeout(function(){ changeInfoSwitcher() }, 2500);
+	};	
 	/**
 	 *	Makes the funnelItem switch the info it's showing. After switch, it calls itself again with new variables. Using Timeout function.
 	 *
@@ -122,8 +156,9 @@ var visualFunnel = function(name, selector){
 		return funnelSize;
 	};
 	
-
-
+	that.getFunnelInfo = function (){
+		return funnelInfo;
+	};
 	/**
 	 *	Builds the DOM and (background) css for the funnel.
 	 *
@@ -200,15 +235,14 @@ var visualFunnel = function(name, selector){
 		 //.userID).alias;
 		//log(user.alias); 
 		
+		var color = "#"+((1<<24)*Math.random()|0).toString(16);
+		
 		trackCover = '<img src="'+item.item.cover+'" class="cover"/>';
-		$('<div class="funnelObject" _funnelItemID=' + key + '>' + trackCover + '</div>').appendTo('#funnel');
-		
-		//make object switch between states (intervals)?
-		
-		$('.funnelObject').css({
+		$('<div class="funnelObject" _funnelItemID=' + key + '>' + trackCover + '</div>').css({
 		    'width' : inDist,
 		    'height' : inDist,
-		});
+		    'background-color' : color
+		}).appendTo('#funnel');
 		
 		$(selector + ' .cover').css({
 		    'width': inDist * 0.8,
@@ -222,8 +256,11 @@ var visualFunnel = function(name, selector){
         itemInfo.artist = item.item.artist;
         itemInfo.album = item.item.album;
         itemInfo.cover = item.item.cover;
-        itemInfo.thumbnail = user.thumbnail;		
+        itemInfo.thumbnail = user.thumbnail;	
+        itemInfo.key = key;	
+        itemInfo.color = color;
 		element.interval = setTimeout(function(){ buildSwitcher(element.selector, state, itemInfo); }, 5000);
+		buildInfoSwitcher(itemInfo);
 		startArc(element.selector, element.circle);
 		return element;
 	};
@@ -233,9 +270,14 @@ var visualFunnel = function(name, selector){
 	 *	@methodOf visualFunnel
 	 *	@param selector string The selector of the DOM funnel element to look for
 	**/
-	that.destroySingle = function(selector){
+	that.destroySingle = function(selector, key){
 		$(selector).stop(true);
 		$(selector).remove();
+		for(var i = 0; i < funnelInfo.items.length; i++){
+			if(key == funnelInfo.items[i].key){
+				funnelInfo.items.splice(i, 1);
+			}
+		}
 	};
 	/**
 	 *	Moves the given DOM element to the given circle
